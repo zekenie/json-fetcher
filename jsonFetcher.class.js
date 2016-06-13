@@ -1,20 +1,6 @@
 import { qs } from 'qs';
 const copy = (obj) => {
-  let newObj;
-  if(obj.prototype) {
-    newObj = Object.create(obj.prototype)
-  } else {
-    newObj = {};
-  }
-
-  Object.keys(obj).forEach(key => {
-    if(obj instanceof Object) {
-      newObj[key] = copy(obj[key]);
-    } else {
-      newObj[key] = obj[key];
-    }
-  });
-  return newObj;
+  return JSON.parse(JSON.stringify(obj));
 }
 
 export { copy };
