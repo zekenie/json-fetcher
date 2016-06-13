@@ -45,6 +45,9 @@ export class JsonFetcher {
     this.defaults = Object.assign(config, defaults);
   }
 
+  config(obj) {
+    Object.assign(this.defaults, obj);
+  }
 
   request(url, options={}) {
     options = Object.assign(copy(this.defaults), options);
