@@ -1,6 +1,17 @@
 import { qs } from 'qs';
 const copy = (obj) => {
-  return JSON.parse(JSON.stringify(obj));
+  if (null == obj || "object" != typeof obj) { return obj; }
+
+  const newObj = obj.constructor();
+
+  Object.keys(obj).forEach(key => {
+    if(obj instanceof Object) {
+      newObj[key] = copy(obj[key]);
+    } else {
+      newObj[key] = obj[key];
+    }
+  });
+  return newObj;
 }
 
 export { copy };
@@ -18,7 +29,7 @@ const parseBody = body => {
     return body;
   }
   try {
-    return JSON.stringify(options.body);
+    return JSON.stringify(body);
   } catch(e) {}
 }
 
