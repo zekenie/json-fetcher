@@ -1,8 +1,10 @@
 module.exports = {
-  entry: './jsonFetch.js',
+  entry: './jsonFetcher.class.js',
   devtool: 'source-map',
   output: {
-    filename: './bundle.js'
+    filename: './index.js',
+    library: 'JsonFetcher',
+    libraryTarget: 'umd'
   },
   module: {
     loaders: [
@@ -11,6 +13,7 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
         query: {
+          plugins: ['lodash'],
           presets: ['es2016']
         }
       }

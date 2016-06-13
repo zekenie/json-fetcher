@@ -5,14 +5,14 @@ This is a micro-library for making http requests for JSON payloads. It wraps `fe
 You can use it in the browser or in node.
 
 ```js
-const jsonFetch = require('json-fetch');
+const jsonFetcher = require('json-fetch');
 
 // simple get request
-jsonFetch.get('http://yourapi.co/api/stuff')
+jsonFetcher.get('http://yourapi.co/api/stuff')
   .then(docs => console.log(docs));
 
 // with query string
-jsonFetch.get('...', {
+jsonFetcher.get('...', {
   query: {foo: 'bar'}
 })
 
@@ -20,7 +20,7 @@ jsonFetch.get('...', {
 
 
 // you can send body payloads too
-jsonFetch.post('...', {
+jsonFetcher.post('...', {
   body: { foo: { bar: 'baz' } }
 });
 ```
@@ -30,7 +30,7 @@ jsonFetch.post('...', {
 Sometimes you want to make tons of requests with some of the same headers. If you want to do that, just use our config method
 
 ```js
-jsonFetch.config({
+jsonFetcher.config({
   headers: {
     Authorization: 'xxxxxx'
   }

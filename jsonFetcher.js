@@ -9,7 +9,7 @@ const defaults = {
   }
 };
 
-const jsonFetch = (url, options={}) => {
+const jsonFetcher = (url, options={}) => {
   options = Object.assign(defaults, options);
 
   if(!!options.body && typeof options.body !== 'string') {
@@ -32,7 +32,7 @@ exports.config = overrides => {
 ['head', 'options', 'connect', 'get', 'post', 'put', 'delete'].reduce((exports, method) => {
   exports[method] = (url, options={}) => {
     options.method = method.toUpperCase();
-    return jsonFetch(url, options);
+    return jsonFetcher(url, options);
   }
   return exports;
 }, exports);
