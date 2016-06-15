@@ -1,20 +1,7 @@
-import { qs } from 'qs';
-const copy = (obj) => {
-  if (null == obj || "object" != typeof obj) { return obj; }
-
-  const newObj = obj.constructor();
-
-  Object.keys(obj).forEach(key => {
-    if(obj instanceof Object) {
-      newObj[key] = copy(obj[key]);
-    } else {
-      newObj[key] = obj[key];
-    }
-  });
-  return newObj;
-}
-
-export { copy };
+// import { qs } from 'qs';
+const qs = require('qs');
+const copy = require('./copy');
+const merge = require('./merge')
 
 const defaults = {
   credentials: 'same-origin',
@@ -28,9 +15,7 @@ const parseBody = body => {
   if(!typeof body === 'string') {
     return body;
   }
-  try {
-    return JSON.stringify(body);
-  } catch(e) {}
+  return JSON.stringify(body);
 }
 
 const parseQuery = query => {
@@ -40,20 +25,26 @@ const parseQuery = query => {
   return qs.stringify(options.query);
 }
 
-export class JsonFetcher {
+class JsonFetcher {
   constructor(config={}) {
     this.defaults = Object.assign(config, defaults);
   }
 
   config(obj) {
-    Object.assign(this.defaults, obj);
+
+    // this needs to merge recursively, and it isn't
+    merge(this.defaults, obj);
   }
 
   request(url, options={}) {
     options = Object.assign(copy(this.defaults), options);
 
     if(!!options.body) {
-      options.body = parseBody(options.body);
+      try {
+        options.body = parseBody(options.body);
+      } catch (e) {
+        return Promise.reject(e);
+      }
     }
 
     if(options.query) {
@@ -62,7 +53,13 @@ export class JsonFetcher {
     }
 
     return fetch(url,options)
-      .then(res => res.json());
+      .then(res => res.json())
+      .then(res => {
+        if(typeof res === 'string') {
+          return JSON.parse(res);
+        }
+        return res;
+      });
   }
 }
 
@@ -74,3 +71,5 @@ export class JsonFetcher {
   }
   return prototype;
 }, JsonFetcher.prototype);
+
+exports.JsonFetcher = JsonFetcher;
