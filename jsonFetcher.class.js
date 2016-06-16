@@ -53,13 +53,7 @@ class JsonFetcher {
     }
 
     return fetch(url,options)
-      .then(res => res.json())
-      .then(res => {
-        if(typeof res === 'string') {
-          return JSON.parse(res);
-        }
-        return res;
-      });
+      .then(res => res.json());
   }
 }
 
