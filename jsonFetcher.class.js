@@ -22,7 +22,7 @@ const parseQuery = query => {
   if(typeof query === 'string') {
     return query;
   }
-  return qs.stringify(options.query);
+  return qs.stringify(query);
 }
 
 class JsonFetcher {
